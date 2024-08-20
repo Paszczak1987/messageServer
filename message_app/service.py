@@ -15,7 +15,7 @@ def get_all_sent(user):
 
 def send_msg(user):
     print("Do kogo chcesz napisać?")
-    for u in User.get_all_users():
+    for u in User.get_all():
         print(u)
     to_whom = get_user_by_id()
     text = input("wiadomość: ")
@@ -36,7 +36,7 @@ def remove_msg(user):
     
 
 def login():
-    users = [user.username for user in User.get_all_users()]
+    users = [user.username for user in User.get_all()]
     username = input('Użytkownik: ')
     ret_val = {
         "login_ok": False,
@@ -46,7 +46,7 @@ def login():
         print(f"Użytkownik {username} nie istnieje.")
         return ret_val
     else:
-        user = User.get_user_by_name(username)
+        user = User.get_by_name(username)
         password = input('Hasło: ')
     
         if check_password(password, user._hashed_password):

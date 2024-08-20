@@ -39,11 +39,11 @@
         </tr>
         {% for item in users %}
             <tr>
-                <td>{{ item[0]._id }}</td>
+                <td>{{ item[0].id() }}</td>
                 <td>{{ item[0].username }}</td>
-                <td>{{ item[0]._hashed_password }}</td>
+                <td>{{ item[0].password() }}</td>
                 <td>
-                    <a href="/edit_user?user_id={{ item[0]._id }}" ><button>Edycja</button></a></td>
+                    <a href="/edit_user?user_id={{ item[0].id() }}" ><button>Edycja</button></a></td>
                 <td>
                     {% if item[1] == 0 %}
                         <form method="POST" action="/remove_user">
@@ -54,7 +54,7 @@
                             <input type="hidden" name="permission" value="no">
                             <input type="hidden" name="has_msgs" value="yes">
                     {% endif %}
-                            <input type="hidden" name="user_id" value="{{ item[0]._id }}">
+                            <input type="hidden" name="user_id" value="{{ item[0].id() }}">
                             <input type="submit" value="Usuń">
                         </form>
                 </td>
