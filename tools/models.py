@@ -75,16 +75,16 @@ class User:
     @classmethod
     def get_all(cls):
         """
-        :return: all users from data base
+        :return: all users from database
         """
-        query = "SELECT * FROM users ORDER BY user_id ASC;"
+        query = "SELECT * FROM users ORDER BY user_id;"
         results = execute_query(query)
         return [cls._create(res[0], res[1], res[2]) for res in results]
     
     @classmethod
     def get_ids(cls):
         """
-        :return: id list of all users from data base
+        :return: id list of all users from database
         """
         query = "SELECT user_id FROM users;"
         results = execute_query(query)
@@ -224,5 +224,4 @@ if __name__ == '__main__':
     print(msgs)
     # for msg in msgs:
     #     print(msg)
-        
     pass
