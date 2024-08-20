@@ -21,11 +21,11 @@ class User:
         
     def update(self, username=None, password=None):
         set_statement = ""
-        hashed_pass = hash_password(password, generate_salt()) if password else None
+        hash_pass = hash_password(password, generate_salt()) if password else None
         if username is not None and password is not None:
-            set_statement += f"SET username = '{username}', password = '{hashed_pass}'"
+            set_statement += f"SET username = '{username}', password = '{hash_pass}'"
         elif username is None and password is not None:
-            set_statement += f"SET password = '{hashed_pass}'"
+            set_statement += f"SET password = '{hash_pass}'"
         elif username is not None and password is None:
             set_statement += f"SET username = '{username}'"
         else:
@@ -226,5 +226,3 @@ if __name__ == '__main__':
     #     print(msg)
         
     pass
-
-    
