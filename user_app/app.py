@@ -1,8 +1,6 @@
 from tools.menu import Option, Menu
 from service import *
 
-
-
 def user_service():
     menu = Menu(
             Option("Dodaj użytkownika", add_user),

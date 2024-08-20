@@ -1,0 +1,66 @@
+{% extends 'main.html' %}
+{% block content %}
+
+{#        <table class="users_table">#}
+{#        <tr>#}
+{#            <th>Użytkownicy</th>#}
+{#            <th><a href="/add_user"><button>Nowy użytkownik</button></a></th>#}
+{#        </tr>#}
+{#        <tr>#}
+{#            <th>Nr id</th>#}
+{#            <th>Nazwa użytkownika</th>#}
+{#            <th>Hasło</th>#}
+{#        </tr>#}
+{#        {% for user in users %}#}
+{#            <tr>#}
+{#                <td>{{ user._id }}</td>#}
+{#                <td>{{ user.username }}</td>#}
+{#                <td>{{ user._hashed_password }}</td>#}
+{#                <td>#}
+{#                    <a href="/edit_user?user_id={{ user._id }}" ><button>Edycja</button></a></td>#}
+{#                <td>#}
+{#                    <form method="POST" action="/remove_user">#}
+{#                        <input type="hidden" name="user_id" value="{{ user._id }}">#}
+{#                        <input type="submit" value="Usuń">#}
+{#                    </form>#}
+{#                </td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{#        </table>#}
+                <table class="users_table">
+        <tr>
+            <th>Użytkownicy</th>
+            <th><a href="/add_user"><button>Nowy użytkownik</button></a></th>
+        </tr>
+        <tr>
+            <th>Nr id</th>
+            <th>Nazwa użytkownika</th>
+            <th>Hasło</th>
+        </tr>
+        {% for item in users %}
+            <tr>
+                <td>{{ item[0]._id }}</td>
+                <td>{{ item[0].username }}</td>
+                <td>{{ item[0]._hashed_password }}</td>
+                <td>
+                    <a href="/edit_user?user_id={{ item[0]._id }}" ><button>Edycja</button></a></td>
+                <td>
+                    {% if item[1] == 0 %}
+                        <form method="POST" action="/remove_user">
+                            <input type="hidden" name="permission" value="yes">
+                            <input type="hidden" name="has_msgs" value="no">
+                    {% else %}
+                        <form method="POST" action="/rm_ask">
+                            <input type="hidden" name="permission" value="no">
+                            <input type="hidden" name="has_msgs" value="yes">
+                    {% endif %}
+                            <input type="hidden" name="user_id" value="{{ item[0]._id }}">
+                            <input type="submit" value="Usuń">
+                        </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+
+
+{% endblock %}

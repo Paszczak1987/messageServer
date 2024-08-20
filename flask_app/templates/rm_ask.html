@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+{% block content %}
+    <div class="message">
+        <p>Usunięcie użytkownika {{ user.username }} spowoduje utratę wszystkich powiązanych wiadomości.<br>
+           Cz napewno chcesz usunąć tego użytkownika?</p>
+
+    <form action="/remove_user" method="POST">
+        <input type="hidden" name="user_id" value="{{ user._id }}">
+        <input type="hidden" name="permission" value="yes">
+        <input type="hidden" name="has_msgs" value="yes">
+        <input type="submit" value="Usuń">
+    </form>
+
+    <form action="/remove_user" method="POST">
+        <input type="hidden" name="user_id" value="{{ user._id }}">
+        <input type="hidden" name="permission" value="no">
+        <input type="hidden" name="has_msgs" value="yes">
+        <input type="submit" value="Anuluj">
+    </form>
+
+    </div>
+{% endblock %}

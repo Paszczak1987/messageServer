@@ -1,5 +1,5 @@
-from tools.menu import Option,Menu, MenuArgs
-from serviceArgs import add_user, erase_user_i, erase_user_n, edit_user, get_user_by_id, get_user_by_username, get_all_users
+from tools.menu import Option, Menu, MenuArgs
+from serviceArgs import *
 
 
 def user_service():
@@ -8,9 +8,9 @@ def user_service():
         "-rm_i": Option("Usuń użytkownika", erase_user_i, "<id>"),
         "-rm_n": Option("Usuń użytkownika", erase_user_n, "<nazwa_użytkownika>"),
         "-ed": Option("Edytuj użytkownika", edit_user, "<id> <nazwa_użytkownika> <hasło>"),
-        "-get_i": Option("Wczytaj uż. po id", get_user_by_id, "<id>"),
-        "-get_n": Option("Wczytaj uż. po nazwie", get_user_by_username, "<nazwa_użytkownika>"),
-        "-get": Option("Wczytaj wszystkich uż.", get_all_users)
+        "-get_i": Option("Wczytaj uż. po id", show_user_by_id, "<id>"),
+        "-get_n": Option("Wczytaj uż. po nazwie", show_user_by_name, "<nazwa_użytkownika>"),
+        "-get": Option("Wczytaj wszystkich uż.", show_all_users)
         }
     menu = MenuArgs(options, indent="  ")
     menu.start()

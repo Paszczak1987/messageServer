@@ -84,12 +84,12 @@ class User:
         return [res[0] for res in results]
     
 class Message:
-    def __init__(self, from_id, to_id, text):
+    def __init__(self, from_id=None, to_id=None, text=None):
         self._id = -1
         self.from_id = from_id
-        self.from_username = User.get_user_by_id(from_id).username
+        self.from_username = User.get_user_by_id(from_id).username if from_id else None
         self.to_id = to_id
-        self.to_username = User.get_user_by_id(to_id).username
+        self.to_username = User.get_user_by_id(to_id).username if to_id else None
         self.text = text
         self.time = None
         self.get_as_sent = None
@@ -140,12 +140,30 @@ class Message:
         return m
     
     @classmethod
+    def _create_without_user(cls, msg_data):
+        m = Message()
+        m._id = msg_data[0]
+        m.from_id = msg_data[1]
+        m.to_id = msg_data[2]
+        m.text = msg_data[3]
+        m.time = msg_data[4]
+        return m
+    
+    @classmethod
     def get_message(cls, id):
         query = f"""
            SELECT * FROM messages WHERE id = {id};
         """
         result = execute_query(query)
         return cls._create_args(result[0])
+    
+    @classmethod
+    def get_message_raw(cls, m_id):
+        query = f"""
+           SELECT * FROM messages WHERE id = {m_id};
+        """
+        result = execute_query(query)
+        return cls._create_without_user(result[0])
     
     @classmethod
     def get_all_to_user_msgs(cls, user_id):
@@ -176,22 +194,12 @@ class Message:
         
         
 if __name__ == '__main__':
-    # user = User.get_user_by_name("Koles")
-    # messages = Message.get_all_user_messages(user._id)
-    # for msg in messages:
-    #     print(msg)
-    # u1 = User.get_user_by_id(22)
-    # u2 = User.get_user_by_id(33)
-    # txt = "Widziałem Cię niedawno na mieście."
-    # m = Message(u1._id,u2._id, txt)
-    # m.send()
-    koles = User.get_user_by_name('Koles')
-    # messages_sent = Message.get_all_from_user_msgs(koles._id)
-    # messages_received = Message.get_all_to_user_msgs(koles._id)
-    messages = Message.get_all_user_msgs(koles._id)
-    # for msg in messages_sent:
-    #     print(msg)
-    # for msg in messages_received:
-    #     print(msg)
-    for msg in messages:
-        print(msg)
+    # msg = []
+    # msg.append(Message.get_message_raw(13))
+    # msg.append(Message.get_message_raw(14))
+    # msg.append(Message.get_message_raw(15))
+    #
+    # for m in msg:
+    #     m.remove()
+    pass
+    

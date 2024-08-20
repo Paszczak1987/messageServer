@@ -31,10 +31,10 @@ class Menu:
         for id, option in enumerate(options):
             self.options[id+1] = option
         self.user = None
-        self.app_name = ""
+        self.app_name = None
         
     def __str__(self):
-        s = "" if self.app_name == "" else f"{self.app_name}\n"
+        s = f"{self.app_name}\n" if self.app_name else ""
         for key, value in self.options.items():
             s += f"{self.indent} {key} - {value}\n"
         s += f"{self.indent} q - Wyjscie\n"
@@ -43,23 +43,23 @@ class Menu:
     def start(self):
         while True:
             action = input(f"{self}")
-            if action == 'q':
-                break
-            action = int(action)
-            if action in self.options.keys():
-                if self.user:
-                    self[action].exe_with_args(self.user)
+            if action.isnumeric():
+                action = int(action)
+                if action in self.options.keys():
+                    if self.user:
+                        self[action].exe_with_args(self.user)
+                    else:
+                        self[action].execute()
                 else:
-                    self[action].execute()
-            else:
-                print("Nie znaleziono polecenia.")
-
-
+                    print("Nie znaleziono polecenia.")
+            elif action == 'q':
+                break
+                
+        
     def __getitem__(self, key):
         return self.options[key]
     
-    
-    
+
 class MenuArgs:
     
     def __init__(self, options, indent=""):
@@ -67,17 +67,16 @@ class MenuArgs:
         self.options = options
         self.commands = list(options.keys())
         self.commands.append("-q")
-        self.app_name = ""
+        self.app_name = None
         
     def __str__(self):
-        s = "" if self.app_name == "" else f"{self.app_name}\n"
+        s = f"{self.app_name}\n" if self.app_name else ""
         for key, value in self.options.items():
             name = value.get_name()+':'
             s += f"{self.indent} {name.ljust(24)} {key} {value.get_args()}\n"
         s += f"{self.indent} {"Wyjscie:".ljust(24)} -q\n"
         return s
 
-    
     def start(self):
         while True:
             user_input = input(f"{self}")
@@ -88,11 +87,12 @@ class MenuArgs:
                 if action == '-q':
                     break
                 if args:
-                    self.options[action].exe_with_args(args)
+                    self[action].exe_with_args(args)
                 else:
-                    self.options[action].execute()
+                    self[action].execute()
             else:
                 print("Nie znaleziono polecenia.")
 
     def __getitem__(self, key):
         return self.options[key]
+    
