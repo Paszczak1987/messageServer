@@ -29,8 +29,8 @@ if __name__ == '__main__':
             to_id int not null,
             message text,
             creation_date timestamp
-        )
+        );
     """
-    # execute_query(users)
-    # execute_query(messages)
+    execute_query(users)
+    execute_query(messages)
     
