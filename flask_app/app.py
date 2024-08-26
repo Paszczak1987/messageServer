@@ -86,7 +86,11 @@ def msgs_login():
 def write():
     users = User.get_all()
     if request.method == 'POST':
-        msg = "Wiadomość została wysłana."
+        content = request.form['content']
+        recipient = int(request.form['recipient'])
+        message = Message(app_data['user'].id(), recipient, content)
+        message.send()
+        msg = f"Wiadomość do {User.get_user_name(recipient)} została wysłana."
         return render_template('app_message.html', message=msg, app="msgs")
     return render_template('msgs_write.html', user=app_data['user'], users=users, app="msgs")
 
@@ -94,6 +98,11 @@ def write():
 def msgs_logout():
     app_data['user'] = None
     return redirect('msgs_login')
+
+@app.route('/msgs_manager', methods=['POST', 'GET'])
+def msgs_manager():
+    return "Wiadomości"
+    
 
 
 
