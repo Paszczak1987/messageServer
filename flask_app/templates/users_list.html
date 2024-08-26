@@ -4,7 +4,6 @@
     <table class="users_table">
         <tr>
             <th>Użytkownicy</th>
-            <th><a href="/add_user"><button>Nowy użytkownik</button></a></th>
         </tr>
         <tr>
             <th>Nr id</th>
@@ -19,14 +18,14 @@
             <td>
                 <a href="/edit_user?user_id={{ item[0].id() }}" ><button>Edycja</button></a></td>
             <td>
-            {% if item[1] == 0 %}
-            <form method="POST" action="/remove_user">
-                <input type="hidden" name="permission" value="yes">
-                <input type="hidden" name="has_msgs" value="no">
+            {% if item[1] == 0 %} <!-- Jeśli nie posiada wiadomości -->
+                <form method="POST" action="/remove_user">
+                    <input type="hidden" name="permission" value="yes">
+                    <input type="hidden" name="has_msgs" value="no">
             {% else %}
-            <form method="POST" action="/rm_ask">
-                <input type="hidden" name="permission" value="no">
-                <input type="hidden" name="has_msgs" value="yes">
+                <form method="POST" action="/rm_ask">
+                    <input type="hidden" name="permission" value="no">
+                    <input type="hidden" name="has_msgs" value="yes">
             {% endif %}
                 <input type="hidden" name="user_id" value="{{ item[0].id() }}">
                 <input type="submit" value="Usuń">

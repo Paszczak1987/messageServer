@@ -75,7 +75,7 @@ class User:
     @classmethod
     def get_all(cls):
         """
-        :return: all users from database
+        :return: list of all user object from database
         """
         query = "SELECT * FROM users ORDER BY user_id;"
         results = execute_query(query)
@@ -84,7 +84,7 @@ class User:
     @classmethod
     def get_ids(cls):
         """
-        :return: id list of all users from database
+        :return: list of all users id's from database
         """
         query = "SELECT user_id FROM users;"
         results = execute_query(query)
@@ -92,6 +92,9 @@ class User:
     
     @classmethod
     def get_names(cls):
+        """
+        :return: list of all users names from database
+        """
         query = "SELECT username FROM users;"
         results = execute_query(query)
         return [res[0] for res in results]
@@ -174,6 +177,10 @@ class Message:
     
     @classmethod
     def get_raw_message(cls, m_id):
+        """
+        :param m_id: message id
+        :returns message object without user assigned
+        """
         query = f"""
            SELECT * FROM messages WHERE id = {m_id};
         """
@@ -182,8 +189,13 @@ class Message:
     
     @classmethod
     def get_all_to_user_msgs(cls, user_id, _from_user=False):
+        """
+        :param user_id: user id
+        :returns list of all message object that was sent to given user
+        """
         query = f"""
-            SELECT * FROM messages WHERE {"from_id" if _from_user else "to_id"} = {user_id};
+            SELECT * FROM messages
+            WHERE {"from_id" if _from_user else "to_id"} = {user_id};
         """
         result = execute_query(query)
         messages = [cls._create(m) for m in result]
@@ -193,16 +205,28 @@ class Message:
     
     @classmethod
     def get_all_from_user_msgs(cls, user_id):
+        """
+        :param user_id: user id
+        :returns list of all message object that given user sent
+        """
         return cls.get_all_to_user_msgs(user_id, _from_user=True)
     
     @classmethod
     def get_all_user_msgs(cls, user_id):
+        """
+        :param user_id: user id
+        :returns list of all message objects of given user
+        """
         received = cls.get_all_to_user_msgs(user_id)
         sent = cls.get_all_from_user_msgs(user_id)
         return received + sent
     
     @classmethod
     def user_msgs_count(cls, user_id):
+        """
+        :param user_id: user id
+        :returns number of how many messages is assigned to given user
+        """
         query = f"""
             SELECT id FROM messages WHERE from_id = {user_id} OR to_id = {user_id};
         """

@@ -12,7 +12,7 @@ def add_user(args=None):
     if _check_args(2, args):
         user = User(args[0], args[1])
         user.save()
-        print(f"Dodano {user.username} id {user._id}.")
+        print(f"Dodano {user.username} id {user.id()}.")
 
 def erase_user_i(args=None):
     if not _check_args(1, args, True):
@@ -21,7 +21,7 @@ def erase_user_i(args=None):
     if user_id in User.get_ids():
         user = User.get_by_id(user_id)
         user.remove()
-        print(f"Usunięto: id:{user._id} - {user.username}")
+        print(f"Usunięto: id:{user.id()} - {user.username}")
     else:
         print(f"Użytkownik o id {user_id} nie istnieje")
 
@@ -31,7 +31,7 @@ def erase_user_n(args=None):
     if args[0] in User.get_names():
         user = User.get_by_name(args[0])
         user.remove()
-        print(f"Usunięto: id:{user._id} - {user.username}")
+        print(f"Usunięto: id:{user.id()} - {user.username}")
     else:
         print(f"Użytkownik {args[0]} nie istnieje.")
 

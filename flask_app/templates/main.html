@@ -7,7 +7,14 @@
 <body>
     <div class="wrap">
     <header>
-        {% include 'header.html' %}
+        {% if app == None %}
+            {% include 'header.html' %}
+        {% elif app == "users" %}
+            {% include 'users_nav.html' %}
+        {% elif app == "msgs" %}
+            {% include 'msgs_nav.html' %}
+        {% endif %}
+
     </header>
 
         <div class="content">

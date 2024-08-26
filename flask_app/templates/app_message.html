@@ -1,0 +1,13 @@
+{% extends 'main.html' %}
+{% block content %}
+    <div class="message">
+        <p>{{ message }}</p>
+        {% if app == "users" %}
+            <a href="/user_manager"><button>Ok</button></a>
+        {% elif app == "msg_login" %}
+            <a href="/msgs_login"><button>Ok</button></a>
+        {% elif app == "msgs" %}
+            <a href="/msgs_login"><button>Ok</button></a>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'main.html' %}
+{% block content %}
+    <p>Witaj {{ user.username }}.</p>
+    <div class="user_action">
+        {% block user_action %}
+
+
+
+
+        {% endblock %}
+    </div>
+{% endblock %}
