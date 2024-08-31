@@ -4,13 +4,18 @@ from tools.password import check_password
 
 app = Flask(__name__)
 
+app_data = {
+    'user': None,
+    'all_users': User.get_all()
+}
+
 @app.route('/')
 def index():
     return render_template('main.html', app=None)
 
 @app.route('/user_manager')
 def user_manager():
-    users = [(user, Message.user_msgs_count(user.id())) for user in User.get_all()]
+    users = [(user, Message.user_msgs_count(user.id())) for user in app_data['all_users']]
     return render_template('users_list.html', users=users, app="users")
 
 @app.route('/remove_user', methods=['POST'])
@@ -54,11 +59,8 @@ def add_user():
     else:
         return render_template('users_add.html')
         
+        
 
-
-app_data = {
-    "user": None
-}
 
 @app.route('/msgs_login', methods=['POST', 'GET'])
 def msgs_login():
@@ -84,7 +86,6 @@ def msgs_login():
 
 @app.route('/write', methods=['POST', 'GET'])
 def write():
-    users = User.get_all()
     if request.method == 'POST':
         content = request.form['content']
         recipient = int(request.form['recipient'])
@@ -92,7 +93,7 @@ def write():
         message.send()
         msg = f"Wiadomość do {User.get_user_name(recipient)} została wysłana."
         return render_template('app_message.html', message=msg, app="msgs")
-    return render_template('msgs_write.html', user=app_data['user'], users=users, app="msgs")
+    return render_template('msgs_write.html', user=app_data['user'], users=app_data['all_users'], app="msgs")
 
 @app.route('/msgs_logout')
 def msgs_logout():
@@ -101,9 +102,23 @@ def msgs_logout():
 
 @app.route('/msgs_manager', methods=['POST', 'GET'])
 def msgs_manager():
-    return "Wiadomości"
+    return render_template('msgs_msgmanager.html', user=app_data['user'], users=app_data['all_users'], app="msgs")
     
+@app.route('/receive', methods=['GET'])
+def msgs_receive():
+    msgs = Message.get_all_to_user_msgs(int(app_data['user'].id()))
+    return render_template('msgs_list_msg.html', user=app_data['user'], users=app_data['all_users'], msgs=msgs, app="msgs", typ="receive")
 
+@app.route('/sent', methods=['GET'])
+def msgs_sent():
+    msgs = Message.get_all_from_user_msgs(int(app_data['user'].id()))
+    return render_template('msgs_list_msg.html', user=app_data['user'], users=app_data['all_users'], msgs=msgs, app="msgs", typ="sent")
+
+@app.route('/show_all', methods=['GET'])
+def msgs_show_all():
+    msgs = Message.get_all_user_msgs(int(app_data['user'].id()))
+    return render_template('msgs_list_msg.html', user=app_data['user'], users=app_data['all_users'], msgs=msgs, app="msgs", typ="all")
 
 
 app.run(debug=True)
+

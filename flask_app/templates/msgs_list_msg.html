@@ -1,0 +1,63 @@
+{% extends 'msgs_msgmanager.html'%}
+{% block user_action %}
+
+        <table class="message_table">
+        <tr>
+            {% if typ == 'receive' %}
+                <th>Wiadomości odebrane</th>
+            {% elif typ == "sent" %}
+                <th>Wiadomości wysłane</th>
+            {% elif typ == "all" %}
+                <th>Wszystkie wiadomości</th>
+            {% endif %}
+        </tr>
+        <tr>
+            <th>id</th>
+            {% if typ == "receive" %}
+                <th>Od</th>
+            {% elif typ == "sent" %}
+                <th>Do</th>
+            {% elif typ == "all" %}
+                <td>Od/Do</td>
+            {% endif %}
+            <th>Treść</th>
+            <th>Data i godzina</th>
+        </tr>
+        {% for msg in msgs %}
+            <tr>
+                <td>{{ msg.id() }}</td>
+                {% if typ == "receive" %}
+                    <td>{{ msg.from_username }}</td>
+                {% elif typ == "sent" %}
+                    <td>{{ msg.to_username }}</td>
+                {% elif typ == "all" %}
+                    {% if msg.get_as_sent == True %}
+                        <td>Do: {{ msg.to_username}} </td>
+                    {% else %}
+                        <td>Od: {{ msg.from_username }}</td>
+                    {% endif %}
+                {% endif %}
+                <td>{{ msg.text }}</td>
+                <td>{{ msg.time }}</td>
+                <td>
+                    jo
+    {#                {% if item[1] == 0 %} <!-- Jeśli nie posiada wiadomości -->#}
+    {#                    <form method="POST" action="/remove_user">#}
+    {#                        <input type="hidden" name="permission" value="yes">#}
+    {#                        <input type="hidden" name="has_msgs" value="no">#}
+    {#                {% else %}#}
+    {#                    <form method="POST" action="/rm_ask">#}
+    {#                        <input type="hidden" name="permission" value="no">#}
+    {#                        <input type="hidden" name="has_msgs" value="yes">#}
+    {#                {% endif %}#}
+    {#                    <input type="hidden" name="user_id" value="{{ item[0].id() }}">#}
+    {#                    <input type="submit" value="Usuń">#}
+    {#                </form>#}
+                 </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+
+{% endblock %}

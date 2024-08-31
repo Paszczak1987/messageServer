@@ -150,6 +150,9 @@ class Message:
         part = f"{"do:" if self.get_as_sent else "od:"}{who}"
         return f"id:{self._id} {part} : {self.text}"
     
+    def id(self):
+        return self._id
+    
     @classmethod
     def _create(cls, msg_data):
         m = Message(msg_data[1], msg_data[2], msg_data[3])
@@ -244,8 +247,8 @@ if __name__ == '__main__':
     #     m.remove()
     # print(User.get_user_name(50))
     msgs = Message.get_all_user_msgs(35)
-    msgs_count = Message.user_msgs_count(35)
-    print(msgs)
-    # for msg in msgs:
-    #     print(msg)
+    # msgs_count = Message.user_msgs_count(35)
+    # print(msgs)
+    for msg in msgs:
+        print(msg)
     pass
